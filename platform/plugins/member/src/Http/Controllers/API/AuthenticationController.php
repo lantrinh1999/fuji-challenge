@@ -88,7 +88,11 @@ class AuthenticationController extends Controller
         $member->email_verify_token = $token;
         $member->save();
 
-        $member->notify(new ConfirmEmailNotification($token));
+        try {
+            $member->notify(new ConfirmEmailNotification($token));
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
 
         return $response
             ->setMessage(__('Registered successfully! We sent an email to you to verify your account!'));
@@ -118,7 +122,7 @@ class AuthenticationController extends Controller
     public function login(LoginRequest $request, BaseHttpResponse $response)
     {
         if (auth('member')->attempt([
-            'email'    => $request->input('email'),
+            'email' => $request->input('email'),
             'password' => $request->input('password'),
         ])) {
             $token = auth('member')->user()->createToken('Laravel Password Grant Client')->accessToken;

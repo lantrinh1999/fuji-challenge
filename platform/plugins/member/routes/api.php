@@ -1,7 +1,7 @@
 <?php
 
 Route::group([
-    'prefix'     => 'api/v1',
+    'prefix'     => 'api',
     'namespace'  => 'Botble\Member\Http\Controllers\API',
     'middleware' => ['api'],
 ], function () {
